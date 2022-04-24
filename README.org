@@ -1,0 +1,81 @@
+#+TITLE: Suckless DWM Fork
+
+* Configure
+
+Clone from suckless repo.
+
+#+begin_src sh
+git clone https://git.suckless.org/dwm
+#+end_src
+
+Create main branch from master.
+
+#+begin_src sh
+git branch main
+git checkout main
+#+end_src
+
+#+RESULTS:
+
+* Patching
+:PROPERTIES:
+:header-args: :var PATCH="example" DIFF="example.diff" :results pp
+:END:
+** Basic Steps
+*** Create New Branch
+Create a new branch from the clean master branch.
+
+#+begin_src sh
+git checkout clean
+git branch $PATCH
+git checkout $PATCH
+git branch
+#+end_src
+
+*** Download and Apply
+
+Download diff file.
+
+#+begin_src sh
+wget dwm.suckless.org/patches/$PATCH/$DIFF
+ls
+#+end_src
+
+Apply diff file.
+
+#+begin_src sh
+git apply $DIFF
+#+end_src
+
+*** Commit Changes
+
+Check changes.
+
+#+begin_src sh
+git status
+#+end_src
+
+Commit changes.
+
+#+begin_src sh
+git checkout $PATCH
+git add .
+#+end_src
+
+** Merge Patches
+
+#+begin_src sh
+git checkout main
+git merge $PATCH -m "applied $PATCH patch"
+#+end_src
+
+** Make Clean
+
+#+begin_src sh :results pp
+git checkout main
+git reset --hard; git clean -fd; git status
+#+end_src
+
+#+begin_src sh :results pp
+make && sudo make clean install
+#+end_src
