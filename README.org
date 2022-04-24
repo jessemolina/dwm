@@ -80,3 +80,131 @@ git reset --hard; git clean -fd; git status
 #+begin_src sh :results pp
 make && sudo make clean install
 #+end_src
+* Patches
+** config
+:PROPERTIES:
+:header-args: :var PATCH="config" :results pp
+:END:
+*** Create New Branch
+Create a new branch from the clean master branch.
+
+#+begin_src sh
+git checkout clean
+git branch $PATCH
+git checkout $PATCH
+git branch
+#+end_src
+
+#+RESULTS:
+:   clean
+: * config
+:   main
+:   master
+:   pertag
+
+*** Commit Changes
+
+Check changes.
+
+#+begin_src sh
+git status
+#+end_src
+
+#+RESULTS:
+: On branch config
+: Changes not staged for commit:
+:   (use "git add <file>..." to update what will be committed)
+:   (use "git restore <file>..." to discard changes in working directory)
+: 	modified:   README.org
+:
+: no changes added to commit (use "git add" and/or "git commit -a")
+
+Commit changes.
+
+#+begin_src sh
+git checkout $PATCH
+git add .
+git commit -m "updated $PATCH patch"
+#+end_src
+
+** pertag
+:PROPERTIES:
+:header-args: :var PATCH="pertag" DIFF="dwm-pertag-20200914-61bb8b2.diff" :results pp
+:END:
+*** Create New Branch
+Create a new branch from the clean master branch.
+
+#+begin_src sh
+git checkout clean
+git branch $PATCH
+git checkout $PATCH
+git branch
+#+end_src
+
+#+RESULTS:
+:   clean
+:   master
+: * pertag
+
+*** Download and Apply
+
+Download diff file.
+
+#+begin_src sh
+wget dwm.suckless.org/patches/$PATCH/$DIFF
+ls
+#+end_src
+
+#+RESULTS:
+#+begin_example
+config.def.h
+config.mk
+drw.c
+drw.h
+dwm.1
+dwm.c
+dwm-pertag-20200914-61bb8b2.diff
+dwm-pertag-20200914-61bb8b2.diff.1
+dwm.png
+LICENSE
+Makefile
+README
+README.org
+transient.c
+util.c
+util.h
+#+end_example
+
+Apply diff file.
+
+#+begin_src sh
+git apply $DIFF
+#+end_src
+
+#+RESULTS:
+
+*** Commit Changes
+
+Check changes.
+
+#+begin_src sh
+git status
+#+end_src
+
+#+RESULTS:
+: On branch pertag
+: Changes not staged for commit:
+:   (use "git add <file>..." to update what will be committed)
+:   (use "git restore <file>..." to discard changes in working directory)
+: 	modified:   README.org
+: 	modified:   dwm.c
+:
+: no changes added to commit (use "git add" and/or "git commit -a")
+
+Commit changes.
+
+#+begin_src sh
+git checkout $PATCH
+git add .
+git commit -m "applied $DIFF for $PATCH patch"
+#+end_src
